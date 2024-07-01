@@ -1,8 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_meteo/consts.dart';
 import 'package:intl/intl.dart';
+import 'package:string_capitalize/string_capitalize.dart';
 import 'package:weather/weather.dart';
 
 class HomeView extends StatefulWidget {
@@ -59,7 +58,7 @@ class HomeState extends State<HomeView> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 30),
           child: buildUI(),
         ),
       )
@@ -78,16 +77,15 @@ class HomeState extends State<HomeView> {
       );
     }
     return SizedBox(
-      width: MediaQuery.sizeOf(context).width,
-      height: MediaQuery.sizeOf(context).height,
+
       child: Column(
-        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           myPadding(30),
           _weatherSearch(),
-          myPadding(50),
+          myPadding(60),
           _locationHeader(),
+          myPadding(20),
           _weatherIcon(),
           _weatherInfo(),
           myPadding(10),
@@ -130,7 +128,6 @@ class HomeState extends State<HomeView> {
           children: [
             Row(
               mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
@@ -140,7 +137,12 @@ class HomeState extends State<HomeView> {
                       fontSize: 18
                   ),
                 ),
-                const Padding(padding: EdgeInsets.symmetric(horizontal: 3)),
+                const Text(", ",
+                    style: TextStyle(
+                        color: Colors.deepOrange,
+                        fontSize: 18
+                    )),
+                // const Padding(padding: EdgeInsets.symmetric(horizontal: 3)),
                 Text(
                   DateFormat("h:mm a").format(now),
                   style: const TextStyle(
@@ -151,7 +153,6 @@ class HomeState extends State<HomeView> {
               ],
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   _weather?.areaName ?? "",
@@ -169,74 +170,75 @@ class HomeState extends State<HomeView> {
                 ),
               ],
             )
-
           ],
         )
-
       ),
     );
   }
 
   Widget _weatherInfo() {
+
+    String? weatherMain = _weather?.weatherMain?.capitalize();
+
     return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-            decoration: BoxDecoration(
-              color: Colors.cyan,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child:Padding(
-              padding: EdgeInsets.all(6),
-              child: Text(
-              _weather?.weatherDescription ?? "",
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 20,
+              decoration: BoxDecoration(
+                color: Colors.teal.shade300,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child:Padding(
+                padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+                child: Row(
+
+                  children: [
+                    Text(
+                      "$weatherMain",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child:const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+                        child: Text(
+                          "+4",
+                          style: TextStyle(
+                            color: Colors.teal,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        ),
-            // Container(
-            //   decoration: BoxDecoration(
-            //     color: Colors.white,
-            //     borderRadius: BorderRadius.circular(10),
-            //   ),
-            //   child:Padding(
-            //     padding: EdgeInsets.all(6),
-            //     child: Text(
-            //       "+4",
-            //       style: const TextStyle(
-            //         color: Colors.cyan,
-            //         fontSize: 20,
-            //       ),
-            //     ),
-            //   ),
-            // )
+
       ]
     );
   }
 
   Widget _weatherIcon() {
-    return Row(
-      // mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      // crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          height: MediaQuery.sizeOf(context).height * 0.20,
-          width: MediaQuery.sizeOf(context).width * 0.20,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: NetworkImage(
-                      "http://openweathermap.org/img/wn/${_weather?.weatherIcon}@4x.png"
-                  )
-              )
-          ),
-        ),
 
+    String weatherIcon = "http://openweathermap.org/img/wn/${_weather?.weatherIcon}@4x.png";
+
+    return Row(
+      // mainAxisSize: MainAxisSize.max,
+      children: [
+        Image.network(
+          weatherIcon,
+          height: 70,
+          width: 70,
+        ),
         Text(
-          "${_weather?.temperature?.celsius?.toStringAsFixed(0)}° C",
+          "${_weather?.temperature?.celsius?.toStringAsFixed(0)}°C",
           style: const TextStyle(
               color: Colors.black,
               fontSize: 50,
@@ -248,36 +250,40 @@ class HomeState extends State<HomeView> {
     );
   }
 
-  // Widget _currentTemp() {
-  //   return ;
-  // }
-
   Widget _extraInfo() {
+
+
+    String? feelsLike = _weather?.tempFeelsLike?.celsius?.toStringAsFixed(0);
+    String? description = _weather?.weatherDescription?.capitalize();
+    String? weatherMain = _weather?.weatherMain?.capitalize();
+
     return Container(
-      height: MediaQuery.sizeOf(context).height * 0.15,
-      width: MediaQuery.sizeOf(context).width * 0.80,
-      decoration: BoxDecoration(color: Colors.cyan, borderRadius: BorderRadius.circular(10)),
-      padding: const EdgeInsets.all(8.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(
+            "Feels like $feelsLike°C. $description. $weatherMain",
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w600,
+              fontSize: 20
+            ),
+          ),
           Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Max: ${_weather?.tempMax?.celsius?.toStringAsFixed(0)}° C",
+                "Max: ${_weather?.tempMax?.celsius?.toStringAsFixed(0)}°C",
                 style: const TextStyle(
-                  color: Colors.white,
                   fontSize: 15
                 ),
               ),
               Text(
-                "Min: ${_weather?.tempMin?.celsius?.toStringAsFixed(0)}° C",
+                "Min: ${_weather?.tempMin?.celsius?.toStringAsFixed(0)}°C",
                 style: const TextStyle(
-                    color: Colors.white,
                     fontSize: 15
                 ),
               )
@@ -291,14 +297,12 @@ class HomeState extends State<HomeView> {
               Text(
                 "Wind: ${_weather?.windSpeed?.toStringAsFixed(0)}m/s",
                 style: const TextStyle(
-                    color: Colors.white,
                     fontSize: 15
                 ),
               ),
               Text(
                 "Humidity: ${_weather?.humidity?.toStringAsFixed(0)}%",
                 style: const TextStyle(
-                    color: Colors.white,
                     fontSize: 15
                 ),
               )
@@ -311,10 +315,12 @@ class HomeState extends State<HomeView> {
 
   Widget _forecastItem(Weather forecast) {
     DateTime date = forecast.date!;
-    String day = DateFormat("EEE").format(date);
+    String day = DateFormat("EEE, MMM d").format(date);
     String iconUrl = "http://openweathermap.org/img/wn/${forecast.weatherIcon}@2x.png";
-    String temp = "${forecast.temperature?.celsius?.toStringAsFixed(0)}°";
+    String tempMax = "${forecast.tempMax?.celsius?.toStringAsFixed(0)}°";
+    String tempMin = "${forecast.tempMin?.celsius?.toStringAsFixed(0)}°";
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           day,
@@ -323,20 +329,22 @@ class HomeState extends State<HomeView> {
             fontWeight: FontWeight.w500,
           ),
         ),
-        const SizedBox(width: 10),
-        Image.network(
-          iconUrl,
-          width: 30,
-          height: 30,
-        ),
-        const SizedBox(width: 10),
-        Text(
-          temp,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
+        Row(
+          children: [
+            Image.network(
+              iconUrl,
+              width: 45,
+              height: 45,
+            ),
+            Text(
+              "$tempMax / $tempMin C",
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        )
       ],
     );
   }
@@ -347,4 +355,6 @@ class HomeState extends State<HomeView> {
     }
     return _forecastWeather!.sublist(1).map((forecast) => _forecastItem(forecast)).toList();
   }
+
+
 }
