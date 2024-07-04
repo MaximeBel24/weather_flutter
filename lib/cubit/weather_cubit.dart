@@ -11,7 +11,8 @@ part 'weather_cubit.freezed.dart';
 part 'weather_state.dart';
 
 class WeatherCubit extends Cubit<WeatherState> {
-  final WeatherFactory wf = WeatherFactory(OPENWEATHER_API_KEY);
+  final WeatherFactory wf =
+      WeatherFactory(OPENWEATHER_API_KEY, language: Language.FRENCH);
 
   WeatherCubit() : super(const WeatherState());
 
@@ -43,8 +44,10 @@ class WeatherCubit extends Cubit<WeatherState> {
     emit(state.copyWith(status: WeatherStatus.loading));
     try {
       final Weather weather = await wf.currentWeatherByCityName(cityName);
+      logger.e('Weather : $weather');
       final List<Weather> forecastWeather =
           await wf.fiveDayForecastByCityName(cityName);
+      logger.i('Forecast weather: $forecastWeather');
       emit(state.copyWith(
           status: WeatherStatus.loaded,
           weather: weather,

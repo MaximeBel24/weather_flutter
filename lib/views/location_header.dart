@@ -1,74 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:string_capitalize/string_capitalize.dart';
 import 'package:weather/weather.dart';
 
 class LocationHeader extends StatelessWidget {
-
   final Weather? weather;
 
   const LocationHeader({super.key, required this.weather});
 
   @override
   Widget build(BuildContext context) {
-
-    DateTime now = weather!.date!;
+    DateTime date = weather!.date!;
+    String day =
+        DateFormat.MMMMEEEEd('fr_FR').add_Hm().format(date).capitalize();
     String areaName = weather!.areaName!;
     String countryCode = weather!.country!.toUpperCase();
     String countryInitials = countryCode.substring(0, 2);
 
     return Align(
-      alignment: Alignment.centerLeft,
       child: Padding(
           padding: const EdgeInsets.only(left: 10),
           child: Column(
             children: [
               Row(
-                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    DateFormat("MMM d").format(now),
-                    style: const TextStyle(
-                        color: Colors.deepOrange,
-                        fontSize: 18
-                    ),
-                  ),
-                  const Text(", ",
-                      style: TextStyle(
-                          color: Colors.deepOrange,
-                          fontSize: 18
-                      )),
-                  // const Padding(padding: EdgeInsets.symmetric(horizontal: 3)),
-                  Text(
-                    DateFormat("h:mm a").format(now),
-                    style: const TextStyle(
-                      color: Colors.deepOrange,
-                      fontSize: 18,
-                    ),
+                    day,
+                    style: const TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ],
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     areaName ?? "",
                     style: const TextStyle(
+                        color: Colors.white,
                         fontSize: 35,
-                        fontWeight: FontWeight.w500
-                    ),
+                        fontWeight: FontWeight.w500),
                   ),
                   Text(
                     ", $countryInitials",
                     style: const TextStyle(
+                        color: Colors.white,
                         fontSize: 35,
-                        fontWeight: FontWeight.w500
-                    ),
+                        fontWeight: FontWeight.w500),
                   ),
                 ],
               )
             ],
-          )
-      ),
+          )),
     );
   }
 }
