@@ -14,7 +14,7 @@ class WeatherInfo extends StatelessWidget {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Container(
         decoration: BoxDecoration(
-          color: Colors.teal.shade300,
+          color: Colors.transparent,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Padding(

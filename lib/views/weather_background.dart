@@ -18,50 +18,53 @@ class WeatherBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    late double temperature;
+
     return BlocProvider(
       create: (context) => WeatherCubit()..initWeather(),
       child: Scaffold(
         backgroundColor: Colors.black,
         extendBodyBehindAppBar: true,
-        body: Padding(
-          padding: const EdgeInsets.fromLTRB(25, 50, 25, 20),
-          child: SizedBox(
-            child: Stack(
-              children: [
-                Align(
-                  alignment: const AlignmentDirectional(3, -0.3),
-                  child: Container(
-                    height: 900,
-                    width: 300,
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.teal),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(25, 50, 25, 20),
+            child: BlocBuilder<WeatherCubit, WeatherState>(
+              builder: (context, state) {
+                late Color backgroundColor =
+                    _getBackgroundColor(state.weather?.temperature?.celsius);
+
+                if (state.status == WeatherStatus.loading ||
+                    state.weather == null) {
+                  return const Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 300, horizontal: 150),
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ));
+                }
+                return SizedBox(
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: const AlignmentDirectional(0, -1.2),
+                        child: Container(
+                          height: 700,
+                          width: 1000,
+                          decoration: BoxDecoration(color: backgroundColor),
+                        ),
+                      ),
+                      BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+                        child: Container(
+                          decoration:
+                              const BoxDecoration(color: Colors.transparent),
+                        ),
+                      ),
+                      const SizedBox(child: WeatherUi())
+                    ],
                   ),
-                ),
-                Align(
-                  alignment: const AlignmentDirectional(-3, -0.3),
-                  child: Container(
-                    height: 900,
-                    width: 300,
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.teal),
-                  ),
-                ),
-                Align(
-                  alignment: const AlignmentDirectional(0, -1.2),
-                  child: Container(
-                    height: 350,
-                    width: 1000,
-                    decoration: const BoxDecoration(color: Colors.deepOrange),
-                  ),
-                ),
-                BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-                  child: Container(
-                    decoration: const BoxDecoration(color: Colors.transparent),
-                  ),
-                ),
-                const SizedBox(child: WeatherUi())
-              ],
+                );
+              },
             ),
           ),
         ),
@@ -69,7 +72,21 @@ class WeatherBackground extends StatelessWidget {
     );
   }
 
-  static myPadding(double value) {
-    return SizedBox(height: value);
+  Color _getBackgroundColor(double? temperature) {
+    if (temperature != null) {
+      if (temperature >= 30.0) {
+        return Colors.red;
+      } else if (temperature >= 20.0) {
+        return Colors.orange;
+      } else if (temperature >= 10.0) {
+        return Colors.yellow;
+      } else if (temperature >= 0) {
+        return Colors.blue;
+      } else {
+        return Colors.cyan;
+      }
+    } else {
+      return Colors.deepPurple;
+    }
   }
 }
