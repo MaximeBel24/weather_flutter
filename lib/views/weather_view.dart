@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_meteo/cubit/weather_cubit.dart';
+import 'package:flutter_meteo/cubit/weather/weather_cubit.dart';
 import 'package:flutter_meteo/views/forecast_item.dart';
 import 'package:flutter_meteo/views/forecast_not_found.dart';
 import 'package:flutter_meteo/views/weather_icon.dart';

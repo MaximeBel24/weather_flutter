@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weather/weather.dart';
 
-import '../consts.dart';
+import '../../consts.dart';
 
 part 'weather_cubit.freezed.dart';
 
@@ -44,10 +44,8 @@ class WeatherCubit extends Cubit<WeatherState> {
     emit(state.copyWith(status: WeatherStatus.loading));
     try {
       final Weather weather = await wf.currentWeatherByCityName(cityName);
-      logger.e('Weather : $weather');
       final List<Weather> forecastWeather =
           await wf.fiveDayForecastByCityName(cityName);
-      logger.i('Forecast weather: $forecastWeather');
       emit(state.copyWith(
           status: WeatherStatus.loaded,
           weather: weather,

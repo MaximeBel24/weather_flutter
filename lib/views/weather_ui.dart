@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_meteo/service/logger.dart';
+import 'package:flutter_meteo/views/error_dialog.dart';
 import 'package:flutter_meteo/views/forecast_list.dart';
 import 'package:flutter_meteo/views/weather_icon.dart';
 import 'package:flutter_meteo/views/weather_info.dart';
 import 'package:flutter_meteo/views/weather_search.dart';
 
-import '../cubit/weather_cubit.dart';
-import '../service/logger.dart';
+import '../cubit/weather/weather_cubit.dart';
 import 'extra_info.dart';
-import 'forecast_item.dart';
-import 'forecast_not_found.dart';
 import 'location_header.dart';
 
 class WeatherUi extends StatelessWidget {
@@ -26,31 +25,7 @@ class WeatherUi extends StatelessWidget {
             context.read<WeatherCubit>().updateWeather(newString);
           },
         ),
-        BlocConsumer<WeatherCubit, WeatherState>(
-          listener: (context, state) {
-            if (state.status == WeatherStatus.error) {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const Text(
-                        "Erreur",
-                        style: TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.w700),
-                      ),
-                      content: Text(state.error.toString()),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text('OK'),
-                        )
-                      ],
-                    );
-                  });
-            }
-          },
+        BlocBuilder<WeatherCubit, WeatherState>(
           builder: (context, state) {
             if (state.status == WeatherStatus.loading ||
                 state.weather == null) {
@@ -63,18 +38,18 @@ class WeatherUi extends StatelessWidget {
             // logger.i('Forecast weather: $state.forecastWeather');
             return Column(
               children: [
-                myPadding(20),
+                myPadding(40),
                 LocationHeader(
                   weather: state.weather,
                 ),
-                myPadding(20),
+                myPadding(10),
                 WeatherIcon(
                   weather: state.weather,
                 ),
-                myPadding(20),
-                WeatherInfo(
-                  weather: state.weather,
-                ),
+                // myPadding(10),
+                // WeatherInfo(
+                //   weather: state.weather,
+                // ),
                 myPadding(20),
                 ExtraInfo(
                   weather: state.weather,

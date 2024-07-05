@@ -9,7 +9,9 @@ import 'package:flutter_meteo/views/weather_info.dart';
 import 'package:flutter_meteo/views/weather_search.dart';
 import 'package:flutter_meteo/views/weather_ui.dart';
 
-import '../cubit/weather_cubit.dart';
+import '../cubit/weather/weather_cubit.dart';
+import '../service/logger.dart';
+import 'error_dialog.dart';
 import 'extra_info.dart';
 import 'location_header.dart';
 
@@ -28,7 +30,18 @@ class WeatherBackground extends StatelessWidget {
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(25, 50, 25, 20),
-            child: BlocBuilder<WeatherCubit, WeatherState>(
+            child: BlocConsumer<WeatherCubit, WeatherState>(
+              listener: (context, state) {
+                if (state.status == WeatherStatus.error) {
+                  logger.e(state.status.name);
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ErrorDialog(
+                            errorMessage: state.error.toString());
+                      });
+                }
+              },
               builder: (context, state) {
                 late Color backgroundColor =
                     _getBackgroundColor(state.weather?.temperature?.celsius);
@@ -54,7 +67,7 @@ class WeatherBackground extends StatelessWidget {
                         ),
                       ),
                       BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+                        filter: ImageFilter.blur(sigmaX: 150, sigmaY: 150),
                         child: Container(
                           decoration:
                               const BoxDecoration(color: Colors.transparent),

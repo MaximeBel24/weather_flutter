@@ -15,8 +15,8 @@ class ForecastItem extends StatelessWidget {
         DateFormat.MMMMEEEEd('fr_FR').add_Hm().format(date).capitalize();
     String iconUrl =
         "http://openweathermap.org/img/wn/${forecast?.weatherIcon}@2x.png";
-    String tempMax = "${forecast?.tempMax?.celsius?.toStringAsFixed(0)}°";
-    String tempMin = "${forecast?.tempMin?.celsius?.toStringAsFixed(0)}°";
+    String tempMax = "${forecast?.tempMax?.celsius?.toStringAsFixed(0)}°C";
+    String tempMin = "${forecast?.tempMin?.celsius?.toStringAsFixed(0)}°C";
     String? description = forecast?.weatherDescription?.capitalize();
 
     return Card(
@@ -55,7 +55,7 @@ class ForecastItem extends StatelessWidget {
                   fontStyle: FontStyle.italic),
             ),
             Text(
-              "Max : $tempMax    Min : $tempMin °C",
+              "Max : $tempMax    Min : $tempMin",
               style: const TextStyle(
                   fontSize: 18,
                   color: Colors.white,

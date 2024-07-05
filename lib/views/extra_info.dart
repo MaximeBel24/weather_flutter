@@ -20,6 +20,9 @@ class ExtraInfo extends StatelessWidget {
           style: const TextStyle(
               color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18),
         ),
+        const SizedBox(
+          height: 10,
+        ),
         Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -17,7 +17,7 @@ class WeatherIcon extends StatelessWidget {
       children: [
         Image.network(weatherIcon, width: 120, height: 120),
         const SizedBox(
-          width: 40,
+          width: 30,
         ),
         Text(
           "${weather?.temperature?.celsius?.toStringAsFixed(0)}°C",
