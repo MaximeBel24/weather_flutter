@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 
 class ErrorDialog extends StatelessWidget {
   final String errorMessage;
+  final Color backgroundColor;
 
-  const ErrorDialog({super.key, required this.errorMessage});
+  const ErrorDialog(
+      {super.key, required this.errorMessage, required this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: Colors.transparent,
-      shadowColor: Colors.black,
+      shadowColor: backgroundColor,
       title: const Text(
         "Erreur",
         textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.red, fontWeight: FontWeight.w700),
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
       ),
-      icon: const Icon(Icons.error),
-      iconColor: Colors.red,
       content: Text(
         errorMessage,
         textAlign: TextAlign.center,

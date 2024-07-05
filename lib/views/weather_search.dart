@@ -19,9 +19,9 @@ class WeatherSearch extends StatelessWidget {
             suffixIcon: IconButton(
               icon: const Icon(Icons.search),
               onPressed: () {
-                // FocusScope.of(context).unfocus();
+                FocusScope.of(context).unfocus();
                 onSubmitted(textController.text);
-                // textController.clear();
+                textController.clear();
               },
             ),
             labelText: "Recherche de ville",
@@ -35,13 +35,11 @@ class WeatherSearch extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(25),
-              borderSide: const BorderSide(
-                  color: Colors.white), // Bordure blanche lorsqu'il est focus
+              borderSide: const BorderSide(color: Colors.white),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(25),
-              borderSide: const BorderSide(
-                  color: Colors.white), // Bordure blanche lorsque non focus
+              borderSide: const BorderSide(color: Colors.white),
             ),
           ),
           onSubmitted: (newString) {

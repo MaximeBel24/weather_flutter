@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_meteo/cubit/search_city/search_city_cubit.dart';
 import 'package:flutter_meteo/service/logger.dart';
 import 'package:flutter_meteo/views/error_dialog.dart';
 import 'package:flutter_meteo/views/forecast_list.dart';
 import 'package:flutter_meteo/views/weather_icon.dart';
 import 'package:flutter_meteo/views/weather_info.dart';
 import 'package:flutter_meteo/views/weather_search.dart';
+import 'package:flutter_meteo/views/weather_search_city.dart';
 
 import '../cubit/weather/weather_cubit.dart';
 import 'extra_info.dart';
@@ -20,9 +22,14 @@ class WeatherUi extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         myPadding(20),
-        WeatherSearch(
-          onSubmitted: (newString) {
-            context.read<WeatherCubit>().updateWeather(newString);
+        // WeatherSearch(
+        //   onSubmitted: (newString) {
+        //     context.read<WeatherCubit>().updateWeather(newString);
+        //   },
+        // ),
+        WeatherSearchCity(
+          onSelected: (city) {
+            context.read<WeatherCubit>().updateWeather(city);
           },
         ),
         BlocBuilder<WeatherCubit, WeatherState>(

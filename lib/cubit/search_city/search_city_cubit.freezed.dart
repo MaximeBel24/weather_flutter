@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$SearchCityState {
   SearchCityStatus get status => throw _privateConstructorUsedError;
   Exception? get error => throw _privateConstructorUsedError;
+  List<City> get cities => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SearchCityStateCopyWith<SearchCityState> get copyWith =>
@@ -30,7 +31,7 @@ abstract class $SearchCityStateCopyWith<$Res> {
           SearchCityState value, $Res Function(SearchCityState) then) =
       _$SearchCityStateCopyWithImpl<$Res, SearchCityState>;
   @useResult
-  $Res call({SearchCityStatus status, Exception? error});
+  $Res call({SearchCityStatus status, Exception? error, List<City> cities});
 }
 
 /// @nodoc
@@ -48,6 +49,7 @@ class _$SearchCityStateCopyWithImpl<$Res, $Val extends SearchCityState>
   $Res call({
     Object? status = null,
     Object? error = freezed,
+    Object? cities = null,
   }) {
     return _then(_value.copyWith(
       status: null == status
@@ -58,6 +60,10 @@ class _$SearchCityStateCopyWithImpl<$Res, $Val extends SearchCityState>
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
               as Exception?,
+      cities: null == cities
+          ? _value.cities
+          : cities // ignore: cast_nullable_to_non_nullable
+              as List<City>,
     ) as $Val);
   }
 }
@@ -70,7 +76,7 @@ abstract class _$$SearchCityStateImplCopyWith<$Res>
       __$$SearchCityStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({SearchCityStatus status, Exception? error});
+  $Res call({SearchCityStatus status, Exception? error, List<City> cities});
 }
 
 /// @nodoc
@@ -86,6 +92,7 @@ class __$$SearchCityStateImplCopyWithImpl<$Res>
   $Res call({
     Object? status = null,
     Object? error = freezed,
+    Object? cities = null,
   }) {
     return _then(_$SearchCityStateImpl(
       status: null == status
@@ -96,6 +103,10 @@ class __$$SearchCityStateImplCopyWithImpl<$Res>
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
               as Exception?,
+      cities: null == cities
+          ? _value._cities
+          : cities // ignore: cast_nullable_to_non_nullable
+              as List<City>,
     ));
   }
 }
@@ -104,17 +115,28 @@ class __$$SearchCityStateImplCopyWithImpl<$Res>
 
 class _$SearchCityStateImpl implements _SearchCityState {
   const _$SearchCityStateImpl(
-      {this.status = SearchCityStatus.init, this.error});
+      {this.status = SearchCityStatus.init,
+      this.error,
+      final List<City> cities = const []})
+      : _cities = cities;
 
   @override
   @JsonKey()
   final SearchCityStatus status;
   @override
   final Exception? error;
+  final List<City> _cities;
+  @override
+  @JsonKey()
+  List<City> get cities {
+    if (_cities is EqualUnmodifiableListView) return _cities;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_cities);
+  }
 
   @override
   String toString() {
-    return 'SearchCityState(status: $status, error: $error)';
+    return 'SearchCityState(status: $status, error: $error, cities: $cities)';
   }
 
   @override
@@ -123,11 +145,13 @@ class _$SearchCityStateImpl implements _SearchCityState {
         (other.runtimeType == runtimeType &&
             other is _$SearchCityStateImpl &&
             (identical(other.status, status) || other.status == status) &&
-            (identical(other.error, error) || other.error == error));
+            (identical(other.error, error) || other.error == error) &&
+            const DeepCollectionEquality().equals(other._cities, _cities));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status, error);
+  int get hashCode => Object.hash(
+      runtimeType, status, error, const DeepCollectionEquality().hash(_cities));
 
   @JsonKey(ignore: true)
   @override
@@ -140,12 +164,15 @@ class _$SearchCityStateImpl implements _SearchCityState {
 abstract class _SearchCityState implements SearchCityState {
   const factory _SearchCityState(
       {final SearchCityStatus status,
-      final Exception? error}) = _$SearchCityStateImpl;
+      final Exception? error,
+      final List<City> cities}) = _$SearchCityStateImpl;
 
   @override
   SearchCityStatus get status;
   @override
   Exception? get error;
+  @override
+  List<City> get cities;
   @override
   @JsonKey(ignore: true)
   _$$SearchCityStateImplCopyWith<_$SearchCityStateImpl> get copyWith =>

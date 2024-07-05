@@ -32,19 +32,23 @@ class WeatherBackground extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(25, 50, 25, 20),
             child: BlocConsumer<WeatherCubit, WeatherState>(
               listener: (context, state) {
+                late Color backgroundColor =
+                    getBackgroundColor(state.weather?.temperature?.celsius);
                 if (state.status == WeatherStatus.error) {
                   logger.e(state.status.name);
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return ErrorDialog(
-                            errorMessage: state.error.toString());
+                          errorMessage: state.error.toString(),
+                          backgroundColor: backgroundColor,
+                        );
                       });
                 }
               },
               builder: (context, state) {
                 late Color backgroundColor =
-                    _getBackgroundColor(state.weather?.temperature?.celsius);
+                    getBackgroundColor(state.weather?.temperature?.celsius);
 
                 if (state.status == WeatherStatus.loading ||
                     state.weather == null) {
@@ -67,7 +71,8 @@ class WeatherBackground extends StatelessWidget {
                         ),
                       ),
                       BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 150, sigmaY: 150),
+                        filter: ImageFilter.blur(sigmaX: 120, sigmaY: 120),
+                        // blendMode: BlendMode,
                         child: Container(
                           decoration:
                               const BoxDecoration(color: Colors.transparent),
@@ -85,7 +90,7 @@ class WeatherBackground extends StatelessWidget {
     );
   }
 
-  Color _getBackgroundColor(double? temperature) {
+  Color getBackgroundColor(double? temperature) {
     if (temperature != null) {
       if (temperature >= 30.0) {
         return Colors.red;

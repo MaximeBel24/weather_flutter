@@ -7,5 +7,6 @@ class SearchCityState with _$SearchCityState {
   const factory SearchCityState({
     @Default(SearchCityStatus.init) SearchCityStatus status,
     Exception? error,
+    @Default([]) List<City> cities,
   }) = _SearchCityState;
 }
